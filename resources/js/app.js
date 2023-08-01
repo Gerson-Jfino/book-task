@@ -16,3 +16,17 @@ const app = new Vue({
     store
     // render: h => h(App),
 })
+
+
+
+const token_auth = sessionStorage.getItem('TOKEN_AUTH')
+if(token_auth) {
+    store.dispatch('Auth/checkAuthenticated')
+        .then( () => {
+            router.push({ name: 'activities' })
+        }).catch(() => {
+            router.push({name: 'login'})
+        })
+}
+if(token_auth)
+    window.axios.defaults.headers.common['Authorization'] = `Bearer ${token_auth}`;

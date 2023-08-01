@@ -23,6 +23,15 @@ Route::group([
     'namespace' => 'Auth'
     ], function () {
         Route::post('/login', 'AuthController@login');
+        Route::post('/register', 'AuthController@register');
+        Route::get('/me', 'AuthController@me');
+    }
+);
+Route::group([
+    'prefix' => 'users',
+    'namespace' => 'User'
+    ], function () {
+        Route::post('/register', 'UserController@store');
     }
 );
 Route::group([

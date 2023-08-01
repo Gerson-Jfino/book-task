@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -32,7 +33,7 @@ class User extends Authenticatable implements JWTSubject
         'active',
         'password',
         'first_login',
-        'remember_token'
+        'login_attempts'
     ];
     protected $casts = [
         'id' => 'string',

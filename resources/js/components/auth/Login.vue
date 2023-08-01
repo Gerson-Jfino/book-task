@@ -1,11 +1,12 @@
 <template>
+    <v-app>
     <v-container fill-height style="height: 100vh;" >
         <v-row wrap justify="center" align="center">
             <v-card min-width="500px" >
                 <v-toolbar color="secondary" dark>
-                    <!-- <v-row justify="center" align="center">
-                        Gugla - Administração
-                    </v-row> -->
+                    <v-row justify="center" align="center">
+                        Login
+                    </v-row>
                     
                 </v-toolbar>
             
@@ -29,10 +30,11 @@
                                 >
 
                                 </v-text-field>
+                                <span>Ainda não tem conta? <span class="register" @click="register"> Registe-se.</span></span>
                             </v-card-text>
                             <v-card-actions>
                                 <v-btn
-                                @click="login"
+                                type="submit"
                                 small
                                 elevation="4"
                                 dark
@@ -41,14 +43,14 @@
                                     Entrar
                                 </v-btn>
                                 <v-spacer></v-spacer>
-                                <v-btn
+                                <!-- <v-btn
                                 depressed
 								rounded
 								text
 								small
-                                :to="{name: 'admin.forgotpassword'}">
+                                >
                                     Esqueceu a senha?
-                                </v-btn>
+                                </v-btn> -->
                             </v-card-actions>
                         
                     </v-form>
@@ -56,6 +58,7 @@
             </v-card>
         </v-row>
     </v-container>
+</v-app>
 </template>
 
 <script>
@@ -71,21 +74,14 @@ export default {
     },
     methods: {
         login() {
-            this.$store.dispatch("auth/login", this.formData)
-            .then((res) => {
-                //console.log(response)
-                const user = res.data.user
-                if(user.first_login) {
-                    this.$router.push({name: 'admin.dashboard'})
-                }
-                else {
-                    this.$router.push({name: 'admin.change-password'})
-                }
-                
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            console.log(this.formData);
+            this.$store.dispatch('Auth/login', this.formData)
+                .then(res => {
+                    this.$router.push({name: 'activities'})
+                })
+        },
+        register() {
+            this.$router.push({name: 'register'})
         }
     }
 }

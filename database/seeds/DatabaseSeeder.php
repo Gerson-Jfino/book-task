@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-            ['name' => 'Admin']
+            ['name' => 'Admin'],
+            ['name' => 'Normal']
         ]);
 
         DB::table('users')->insert([

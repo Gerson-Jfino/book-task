@@ -8,43 +8,21 @@
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-menu
-				content-class="elevation-0"
-				open-on-hover
-				right
-				min-width="200px"
-				offset-y
+			offset-y
 			>
 				<template v-slot:activator="{ on, attrs }">
-					<v-avatar size="48" v-bind="attrs" v-on="on" color="secondary">
-						<!-- <v-img v-if="user.logo" :src="user.logo"></v-img> -->
-						<span class="white--text" headline>GM</span>
-					</v-avatar>
-				</template>
-				<v-card class="mt-2" dark color="accent">
-					<v-list-item-content class="justify-center">
-						<div class="mx-auto text-center">
-							<v-avatar color="secondary">
-								<span class="white--text" headline>GM</span>
-							</v-avatar>
-
-							<h3>GM</h3>
-							<!-- <p class="caption mt-1">{{ user.email }}</p> -->
-							<v-divider class="my-1"></v-divider>
-							<v-btn
-								depressed
-								rounded
-								text
-								small
-							>
-								Alterar Senha
-							</v-btn>
-							<v-divider class="my-1"></v-divider>
-							<v-btn depressed rounded text small>
-								Sair
-							</v-btn>
+					<v-btn v-bind="attrs" v-on="on" depressed text small>
+						<div>
+							{{user.name}}
 						</div>
-					</v-list-item-content>
-				</v-card>
+					</v-btn>
+				</template>
+				<v-list>
+					<v-list-item>
+						<v-list-item-icon><v-icon>mdi-logout</v-icon></v-list-item-icon>
+						<v-list-item-title>Sair</v-list-item-title>
+					</v-list-item>
+				</v-list>
 			</v-menu>
 
 		</v-app-bar>
@@ -52,7 +30,33 @@
 </template>
 <script>
 export default {
-    
+	data() {
+		return {
+			userData: {
+				name: ''
+			}
+		}
+	},
+    computed: {
+		user() {
+			this.userData = this.$store.state.Auth.user;
+			return this.$store.state.Auth.user;
+			// return this.$store.state.Auth.user
+		},
+		initialsNameUser() {
+			const full_name = this.userData.name.split(" ");
+			const initials = full_name.shift().charAt(0) + full_name.pop().charAt(0);
+			return initials.toUpperCase();
+		},
+	},
+	watch: {
+		userData(user) {
+			// this.useuser.name);
+		}
+	},
+	created() {
+		// console.log(this.$store.state.Auth.user.name);
+	}
 }
 </script>
 <style scoped>
