@@ -1,10 +1,9 @@
 <template>
     <div>
-		<v-app-bar app clipped-left color="#be0028">
+		<v-app-bar app clipped-left>
 			<!-- <v-app-bar-nav-icon class="grey--text" @click.prevent="drawer = !drawer"></v-app-bar-nav-icon> -->
 			<v-toolbar-title>
-				<!-- <img src="/images/logo_png/Absa_Logo_White.png" height="25" alt="" /> -->
-				Livro de Atividades
+				<img src="/images/guezi.png" height="50" alt="" />
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-menu
@@ -60,5 +59,7 @@ export default {
 }
 </script>
 <style scoped>
-    
+    span {
+		font-size: 14px;
+	}
 </style>

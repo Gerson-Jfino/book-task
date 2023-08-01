@@ -21,6 +21,8 @@ class CreateActivitiesTable extends Migration
                 $table->string('manager', 255);
                 $table->unsignedInteger('status_id');
                 $table->foreign('status_id')->references('id')->on('status');
+                $table->uuid('user_id');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->string('owner', 255);
                 $table->date('start_date');
                 $table->date('due_date')->nullable();

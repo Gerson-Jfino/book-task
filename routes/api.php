@@ -23,7 +23,7 @@ Route::group([
     'namespace' => 'Auth'
     ], function () {
         Route::post('/login', 'AuthController@login');
-        Route::post('/register', 'AuthController@register');
+        // Route::post('/register', 'AuthController@register');
         Route::get('/me', 'AuthController@me');
     }
 );
@@ -36,6 +36,7 @@ Route::group([
 );
 Route::group([
     'prefix' => 'activities',
+    'middleware' => ['auth.jwt'],
     'namespace' => 'Activities'
     ], function () {
         Route::get('/', 'ActivitiesController@index');

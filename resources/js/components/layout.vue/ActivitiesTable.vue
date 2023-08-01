@@ -6,6 +6,7 @@
             <tr>
                 <th class="text-left">Nº Tarefa</th>
                 <th class="text-left">Atividades</th>
+                <th class="text-left" v-if="user.role_id == 1">Designado a</th>
                 <th class="text-left">Responsavel</th>
                 <th class="text-left">Status</th>
                 <th class="text-left">Solicitante</th>
@@ -19,6 +20,7 @@
             <tr v-for="task in activities.data" :key="task.id">
                 <td class="text-left">{{ task.id }}</td>
                 <td>{{ task.name }}</td>
+                <td v-if="user.role_id == 1">{{ task.user }}</td>
                 <td>{{ task.manager }}</td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.owner }}</td>
@@ -46,6 +48,11 @@ export default {
             required: true,
             type: Object,
             name: '',
+        }
+    },
+    computed: {
+        user() {
+            return this.$store.state.Auth.user;
         }
     }
 };

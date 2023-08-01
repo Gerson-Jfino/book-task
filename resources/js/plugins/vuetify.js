@@ -10,11 +10,11 @@ const opts = {
   theme: {
     themes: {
       light: {
-        accent: '#be0028',
+        accent: '#F4811F',
         secondary: '#8a0000',
       },
       dark: {
-        accent: '#be0028',
+        accent: '#F4811F',
         secondary: '#f15726',
       }
     }

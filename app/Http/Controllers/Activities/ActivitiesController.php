@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ActivitiesController extends Controller
 {
@@ -22,19 +23,38 @@ class ActivitiesController extends Controller
         return response()->json($activitie, 200);
     }
     public function index(){
-        $activities = $this->activitie->with('status')->get()->map(function ($act) {
-            return [
-                "id" => $act->id,
-                "name" => $act->name,
-                "manager" => $act->manager,
-                "owner" => $act->owner,
-                "start_date" => $act->start_date,
-                "due_date" => $act->due_date,
-                "final_date" => $act->final_date,
-                "status" => $act->status->name
-            ];
-        });
-        return response()->json($activities, 200);
+        $user = Auth::user();
+        if ($user->role_id == 2) {
+
+            $activities = $this->activitie->with('status')->get()->map(function ($act) {
+                return [
+                    "id" => $act->id,
+                    "name" => $act->name,
+                    "manager" => $act->manager,
+                    "owner" => $act->owner,
+                    "start_date" => $act->start_date,
+                    "due_date" => $act->due_date,
+                    "final_date" => $act->final_date,
+                    "status" => $act->status->name
+                ];
+            });
+            return response()->json($activities, 200);
+        } elseif ($user->role_id == 1) {
+            $activities = $this->activitie->with(['user', 'status'])->get()->map(function ($act) {
+                return [
+                    "id" => $act->id,
+                    "name" => $act->name,
+                    "manager" => $act->manager,
+                    "owner" => $act->owner,
+                    "start_date" => $act->start_date,
+                    "due_date" => $act->due_date,
+                    "final_date" => $act->final_date,
+                    "status" => $act->status->name,
+                    "user" => $act->user->name
+                ];
+            });
+            return response()->json($activities, 200);
+        }
     }
     public function indexStatus() {
         $status = $this->status->get();
@@ -64,6 +84,7 @@ class ActivitiesController extends Controller
                 'status_situation'
             ]
         );
+        $input['user_id'] = Auth::user()->id;
         $input['start_date'] = date('Y-m-d', strtotime($request['start_date']));
         $input['due_date'] = date('Y-m-d',strtotime($request['due_date']));
         $input['final_date'] = date('Y-m-d',strtotime($request['final_date']));

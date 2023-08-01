@@ -24,6 +24,7 @@ class Activitie extends Model
         'name',
         'manager',
         'status_id',
+        'user_id',
         'owner',
         'start_date',
         'due_date',
@@ -34,6 +35,7 @@ class Activitie extends Model
         'name' => 'string',
         'manager' => 'string',
         'status_id' => 'integer',
+        'user_id' => 'string',
         'owner' => 'string',
         'status_situation' => 'string'
     ];
@@ -41,6 +43,9 @@ class Activitie extends Model
     public function status()
     {
         return $this->belongsTo(\App\Models\Status::class, 'status_id');
+    }
+    public function user() {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
 }
