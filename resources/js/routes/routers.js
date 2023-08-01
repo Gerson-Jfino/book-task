@@ -10,6 +10,8 @@ import RegisterComponent from '../components/auth/RegisterComponent.vue'
 import ActividadesComponent from '../components/ActividadesComponent.vue'
 import mainComponent from '../components/MainComponent.vue'
 import Login from '../components/auth/Login.vue'
+import UserComponent from '../components/users/UserComponent.vue'
+import UserEditComponent from '../components/users/UserEditComponent.vue'
 
 Vue.use(VueRouter)
 
@@ -52,8 +54,24 @@ const routes = [
                 props: true 
             }
         ]
-    
-        
+    },
+    {
+        path: '/utilizadores',
+        component: mainComponent,
+        meta: {auth: true},
+        children: [
+            {
+                path: '/utilizadores',
+                component: UserComponent,
+                name: 'users'
+            },
+            {
+                path: '/utilizadores/:id',
+                component: UserEditComponent,
+                name: 'users.edit',
+                props: true
+            }
+        ]
     }
 ];
 

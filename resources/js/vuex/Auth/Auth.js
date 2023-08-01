@@ -105,6 +105,54 @@ export default {
                     })
                     .finally(() => {commit('Loader/CHANGE_LOADING', false, { root: true })})
             })
+        },
+        getUsers({commit}) {
+            commit('Loader/CHANGE_LOADING', true, { root: true })
+            return new Promise((resolve, reject) => {
+                axios.get(`${URL_BASE}/users`).then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+                .finally(() => commit('Loader/CHANGE_LOADING', false, { root: true }))
+            })
+        },
+        updateUser({commit}, params) {
+            commit('Loader/CHANGE_LOADING', true, { root: true })
+            return new Promise((resolve, reject) => {
+                axios.post(`${URL_BASE}/users/${params.id}`, params).then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+                .finally(() => commit('Loader/CHANGE_LOADING', false, { root: true }))
+            })
+        },
+        getUser({commit}, params) {
+            commit('Loader/CHANGE_LOADING', true, { root: true })
+            return new Promise((resolve, reject) => {
+                axios.get(`${URL_BASE}/users/${params.id}`).then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+                .finally(() => commit('Loader/CHANGE_LOADING', false, { root: true }))
+            })
+        },
+        getRoles({commit}) {
+            commit('Loader/CHANGE_LOADING', true, { root: true })
+            return new Promise((resolve, reject) => {
+                axios.get(`${URL_BASE}/users/get/roles`).then(res => {
+                    resolve(res)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+                .finally(() => commit('Loader/CHANGE_LOADING', false, { root: true }))
+            })
         }
     }
 }

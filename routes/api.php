@@ -32,6 +32,10 @@ Route::group([
     'namespace' => 'User'
     ], function () {
         Route::post('/register', 'UserController@store');
+        Route::get('/', 'UserController@index');
+        Route::get('/{id}', 'UserController@show');
+        Route::post('/{id}', 'UserController@update');
+        Route::get('/get/roles', 'UserController@getRole');
     }
 );
 Route::group([
