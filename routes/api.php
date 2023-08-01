@@ -20,9 +20,9 @@ use Illuminate\Http\Request;
 
 Route::group([
     'prefix' => 'users',
-    'namespace' => 'User'
+    'namespace' => 'Auth'
     ], function () {
-        Route::get('/', 'UserController@index');
+        Route::post('/login', 'AuthController@login');
     }
 );
 Route::group([
