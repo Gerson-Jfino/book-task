@@ -27,8 +27,7 @@ export default {
 
         AUTH_USER_LOGOUT(state) {
             state.user = {},
-            state.authenticated = false,
-            state.urlBack = 'site.welcome'
+            state.authenticated = false
         }
     },
     actions: {
@@ -99,11 +98,28 @@ export default {
                 axios.post(`${URL_BASE}/users/register`, params)
                     .then(res => {
                         resolve(res)
+                        sessionStorage.removeItem('token')
                     })
                     .catch(err => {
                         reject(err)
                     })
                     .finally(() => {commit('Loader/CHANGE_LOADING', false, { root: true })})
+            })
+        },
+        logout({commit}) {
+            commit('Loader/CHANGE_LOADING', true, { root: true })
+            return new Promise((resolve, reject) => {
+                axios.get(`${URL_BASE}/users/logout`)
+                    .then(res => {
+                        resolve(res)
+                        commit('AUTH_USER_LOGOUT', res)
+                        sessionStorage.removeItem('token')
+
+                    }).catch(err => {
+                        reject(err)
+                    }).finally(() => {
+                        commit('Loader/CHANGE_LOADING', false, { root: true })
+                    })
             })
         },
         getUsers({commit}) {

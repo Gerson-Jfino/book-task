@@ -19,7 +19,7 @@
 					</v-btn>
 				</template>
 				<v-list>
-					<v-list-item>
+					<v-list-item @click.prevent="logout">
 						<v-list-item-icon><v-icon>mdi-logout</v-icon></v-list-item-icon>
 						<v-list-item-title>Sair</v-list-item-title>
 					</v-list-item>
@@ -49,6 +49,7 @@ export default {
 			const initials = full_name.shift().charAt(0) + full_name.pop().charAt(0);
 			return initials.toUpperCase();
 		},
+		
 	},
 	watch: {
 		userData(user) {
@@ -57,6 +58,14 @@ export default {
 	},
 	created() {
 		// console.log(this.$store.state.Auth.user.name);
+	},
+	methods: {
+        logout(){
+			this.$store.dispatch('Auth/logout')
+				.then(res => {
+					this.$router.push({name: 'login'})
+				})
+		}
 	}
 }
 </script>

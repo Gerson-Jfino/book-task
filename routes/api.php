@@ -25,6 +25,7 @@ Route::group([
         Route::post('/login', 'AuthController@login');
         // Route::post('/register', 'AuthController@register');
         Route::get('/me', 'AuthController@me');
+        Route::get('/logout', 'AuthController@logout');
     }
 );
 Route::group([
