@@ -35,6 +35,12 @@ import HeaderComponentVue from '../layout.vue/HeaderComponent.vue';
       },
       methods: {
         getActivities() {
+          this.$store.dispatch('Auth/checkAuthenticated')
+            .then(res => {
+
+            }).catch(() => {
+                router.push({name: 'login'})
+            })
             this.$store.dispatch('getActivities').then(res => {
                 this.activities.data = res;
                 // console.log(res);

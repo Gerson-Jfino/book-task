@@ -8,7 +8,7 @@
         <v-row
         align="center"
         class="mx-0">
-          Gerson Josefino Maoze 
+          <!-- Gerson Josefino Maoze  -->
         </v-row>
         <v-row>
           <v-col cols="12" md="4">

@@ -4,21 +4,16 @@
         <v-row wrap justify="center" align="center">
             <v-card min-width="500px" >
                 <v-list>
-							<v-list-item >
-								<v-list-item-content >
-									<!-- <div class="overline mb-4">OVERLINE</div> -->
-
-									<v-list-item-title class="headline mb-1">
-										Atividades DTI - Login
-									</v-list-item-title>
-								</v-list-item-content>
-
-							<v-list-item-avatar
-								tile
-								size="80"
-							>
-						<img src="/images/guezi.png" height="25" alt="" />
-						</v-list-item-avatar>
+					<v-list-item >
+						
+                        <v-row justify="center" align="center" style="margin-top: 20px;">
+                            <v-list-item-avatar
+                                tile
+                                size="80"
+                            >
+                                <img src="/images/guezi.png" height="25" alt="" />
+                            </v-list-item-avatar>
+                        </v-row>
 					</v-list-item>
 				</v-list>
             

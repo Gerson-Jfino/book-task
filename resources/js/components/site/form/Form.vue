@@ -6,7 +6,9 @@
             <v-form class="mt-4" @submit.prevent="onSubmit">
                 <v-card>
                     <v-card-title>
-                        <h4 class="grey--text font-weight-regular">Cadastrar Atividade</h4>
+                        <v-row justify="center" align="center">
+                            <h4 class="grey--text font-weight-regular">Cadastrar Actividade</h4>
+                        </v-row>
                     </v-card-title>
                     <v-card-text>
                         <v-row>
