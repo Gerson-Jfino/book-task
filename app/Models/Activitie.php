@@ -29,7 +29,9 @@ class Activitie extends Model
         'start_date',
         'due_date',
         'final_date',
-        'status_situation'
+        'status_situation',
+        'document',
+        'observation',
     ];
     protected $casts = [
         'name' => 'string',
@@ -37,8 +39,14 @@ class Activitie extends Model
         'status_id' => 'integer',
         'user_id' => 'string',
         'owner' => 'string',
-        'status_situation' => 'string'
+        'status_situation' => 'string',
+        'document' => 'string',
+        'observation' => 'string',
     ];
+    public function getDocumentAttribute()
+    {
+        return env('APP_URL') . $this->attributes['document'];
+    }
 
     public function status()
     {

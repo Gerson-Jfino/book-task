@@ -28,6 +28,8 @@ class CreateActivitiesTable extends Migration
                 $table->date('due_date')->nullable();
                 $table->date('final_date');
                 $table->text('status_situation')->nullable();
+                $table->text('document')->nullable();
+                $table->text('observation')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             });

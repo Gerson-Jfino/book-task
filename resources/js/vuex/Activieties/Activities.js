@@ -8,10 +8,10 @@ export default {
         }
     },
     actions: {
-        getActivities({commit}) {
+        getActivities({commit}, params) {
             commit('Loader/CHANGE_LOADING', true, { root: true })
             return new Promise((resolve, reject) => {
-                axios.get(`${URL_BASE}/activities`).then(res => {
+                axios.get(`${URL_BASE}/activities?s_name=${params.filter}&s_status=${params.status}`).then(res => {
                     // console.log(res);
                     resolve(res.data)
                 }).catch(err => {
@@ -46,7 +46,7 @@ export default {
         updateActivitie({commit}, params) {
             commit('Loader/CHANGE_LOADING', true, { root: true })
             return new Promise((resolve, reject) => {
-                axios.post(`${URL_BASE}/activities/update/${params.id}`, params).then(res => {
+                axios.post(`${URL_BASE}/activities/update/${params.get('id')}`, params).then(res => {
                     resolve(res)
                 }).catch(err => {
                     console.log(err);
@@ -63,6 +63,17 @@ export default {
                     reject(err)
                 }).finally(() => {commit('Loader/CHANGE_LOADING', false, { root: true })})
             })
-        }
+        },
+        getDashboardData({commit}) {
+            commit('Loader/CHANGE_LOADING', true, { root: true })
+            return new Promise((resolve, reject) => {
+                axios.get(`${URL_BASE}/activities/dashboard/data`).then(res => {
+                    // console.log(res);
+                    resolve(res.data)
+                }).catch(err => {
+                    reject(err)
+                }).finally(() => {commit('Loader/CHANGE_LOADING', false, { root: true })})
+            })
+        } 
     }
 } 

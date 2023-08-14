@@ -12,6 +12,7 @@ import mainComponent from '../components/MainComponent.vue'
 import Login from '../components/auth/Login.vue'
 import UserComponent from '../components/users/UserComponent.vue'
 import UserEditComponent from '../components/users/UserEditComponent.vue'
+import DashboardComponent from '../components/site/DashboardComponent.vue'
 
 Vue.use(VueRouter)
 
@@ -25,8 +26,8 @@ const routes = [
         path: '/register',
         component: RegisterComponent,
         name: 'register'
-    }
-    ,{
+    },
+    {
         path: '/atividades',
         component: mainComponent,
         meta: {auth: true},
@@ -70,6 +71,18 @@ const routes = [
                 component: UserEditComponent,
                 name: 'users.edit',
                 props: true
+            }
+        ]
+    },
+    {
+        path: '/dashboard',
+        component: mainComponent,
+        meta: {auth: true},
+        children: [
+            {
+                path: '/dashboard',
+                component: DashboardComponent,
+                name: 'dashboard'
             }
         ]
     }

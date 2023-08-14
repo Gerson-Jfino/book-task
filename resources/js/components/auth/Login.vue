@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 export default {
     data() {
         return {
@@ -85,6 +86,14 @@ export default {
             this.$store.dispatch('Auth/login', this.formData)
                 .then(res => {
                     this.$router.push({name: 'activities'})
+                }).catch(err => {
+                    Swal.fire({
+						title: "Emai e Senha Incorretos!",
+						// html: `A sua conta foi registada!<br> Use as mesmas credenciais para fazer o login.`,
+						icon: "erro",
+						confirmButtonText: "Ok",
+						confirmButtonColor: "#FF1744",
+					})
                 })
         },
         register() {

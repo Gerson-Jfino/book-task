@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Activities;
 
 use App\Models\Activitie;
 use App\Models\Status;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,19 +15,24 @@ class ActivitiesController extends Controller
 {
     private $activitie;
     private $status;
-    public function __construct(Activitie $activitie, Status $status) {
+    private $user;
+    public function __construct(Activitie $activitie, Status $status, User $user) {
         $this->activitie = $activitie;
         $this->status = $status;
+        $this->user = $user;
     }
     public function show($id) {
-        $activitie = $this->activitie->with('status')->find($id);
+        $activitie = $this->activitie->with(['user', 'status'])->find($id);
         return response()->json($activitie, 200);
     }
     public function index(){
+        $filter = request('s_name');
+        $status = request('s_status');
         $user = Auth::user();
-        if ($user->role_id == 2) {
-
-            $activities = $this->activitie->with('status')->get()->map(function ($act) {
+        if (!empty($filter)){
+            $activities = $this->activitie->with(['user', 'status'])->whereHas('user', function($q) use ($filter) {
+                $q->where('name', 'like', "%$filter%");
+            })->get()->map(function ($act) {
                 return [
                     "id" => $act->id,
                     "name" => $act->name,
@@ -35,11 +41,29 @@ class ActivitiesController extends Controller
                     "start_date" => $act->start_date,
                     "due_date" => $act->due_date,
                     "final_date" => $act->final_date,
-                    "status" => $act->status->name
+                    "status" => $act->status->name,
+                    "user" => $act->user->name,
+                    "user_id" => $act->user_id
                 ];
             });
-            return response()->json($activities, 200);
-        } elseif ($user->role_id == 1) {
+        } elseif (!empty($status)){
+            $activities = $this->activitie->with(['user', 'status'])->whereHas('status', function($q) use ($status) {
+                $q->where('id', '=', $status);
+            })->get()->map(function ($act) {
+                return [
+                    "id" => $act->id,
+                    "name" => $act->name,
+                    "manager" => $act->manager,
+                    "owner" => $act->owner,
+                    "start_date" => $act->start_date,
+                    "due_date" => $act->due_date,
+                    "final_date" => $act->final_date,
+                    "status" => $act->status->name,
+                    "user" => $act->user->name,
+                    "user_id" => $act->user_id
+                ];
+            });
+        } else {
             $activities = $this->activitie->with(['user', 'status'])->get()->map(function ($act) {
                 return [
                     "id" => $act->id,
@@ -50,11 +74,12 @@ class ActivitiesController extends Controller
                     "due_date" => $act->due_date,
                     "final_date" => $act->final_date,
                     "status" => $act->status->name,
-                    "user" => $act->user->name
+                    "user" => $act->user->name,
+                    "user_id" => $act->user_id
                 ];
             });
-            return response()->json($activities, 200);
         }
+        return response()->json($activities, 200);
     }
     public function indexStatus() {
         $status = $this->status->get();
@@ -69,7 +94,8 @@ class ActivitiesController extends Controller
             'start_date' => 'required',
             'due_date' => 'nullable',
             'final_date' => 'required',
-            'status_situation' => 'nullable'
+            'status_situation' => 'nullable',
+            'document' => 'nullable|file'
         ]);
 
         $input = $request->only(
@@ -90,9 +116,15 @@ class ActivitiesController extends Controller
         $input['final_date'] = date('Y-m-d',strtotime($request['final_date']));
         DB::beginTransaction();
         try {
+            if ($request->document) {
+                $path = 'uploads';
+                $document = time().'.' . $request->document->getClientOriginalExtension();
+                $request->document->move(public_path($path), $document);
+                $input['document'] = $path . '/' . $document;
+            }
             $activitie = $this->activitie->create($input);
             DB::commit();
-            return response()->json($activitie, 201);
+            return response()->json($input, 201);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json($e, 500);
@@ -107,7 +139,9 @@ class ActivitiesController extends Controller
             'start_date' => 'nullable',
             'due_date' => 'nullable',
             'final_date' => 'required',
-            'status_situation' => 'nullable'
+            'status_situation' => 'nullable',
+            'document' => 'nullable|file',
+            'observation' => 'nullable'
         ]);
         $input = $request->only(
             [
@@ -118,7 +152,8 @@ class ActivitiesController extends Controller
                 'start_date',
                 'due_date',
                 'final_date',
-                'status_situation'
+                'status_situation',
+                'observation'
             ]
         );
         $activitie = $this->activitie->find($id);
@@ -127,6 +162,12 @@ class ActivitiesController extends Controller
         }
         DB::beginTransaction();
         try {
+            if ($request->document) {
+                $path = 'uploads';
+                $document = time().'.' . $request->document->getClientOriginalExtension();
+                $request->document->move(public_path($path), $document);
+                $input['document'] = $path . '/' . $document;
+            }
             $activitie->update($input);
             DB::commit();
             return response()->json($activitie, 200);
@@ -149,5 +190,31 @@ class ActivitiesController extends Controller
             DB::rollback();
             return response()->json($e, 500);
         }
+    }
+    public function dashboardData() {
+        $totalUsers = $this->user->get()->count();
+        $totalActivities = $this->activitie->get()->count();
+        $admin = $this->user->where('role_id', 1)->get()->count();
+        $normal = $this->user->where('role_id', 2)->get()->count();
+        $emCurso = $this->activitie->where('status_id', 1)->get()->count(); 
+        $supervisor = $this->activitie->where('status_id', 2)->get()->count(); 
+        $continuo = $this->activitie->where('status_id', 3)->get()->count(); 
+        $pendente = $this->activitie->where('status_id', 4)->get()->count(); 
+        $concluido = $this->activitie->where('status_id', 5)->get()->count(); 
+        return response()->json([
+            'usersTotla' => $totalUsers,
+            'users' => [
+                'admin' => $admin,
+                'normal' => $normal
+            ],
+            'actividadestotal' =>$totalActivities,
+            'status' => [
+                'curso'=> $emCurso,
+                'continuo' => $supervisor,
+                'supervisor' => $supervisor,
+                'pendente' => $pendente,
+                'concluido' => $concluido
+            ]
+        ], 200);
     }
 }

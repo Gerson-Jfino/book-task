@@ -33,7 +33,7 @@ export default {
     actions: {
         login({ commit }, params) {
             commit('Loader/CHANGE_LOADING', true, { root: true })
-            console.log('a');
+            // console.log('a');
             return new Promise((resolve, reject) => {
                 
                 axios.post(`${URL_BASE}/users/login`, params)

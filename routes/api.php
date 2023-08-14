@@ -45,6 +45,7 @@ Route::group([
     'namespace' => 'Activities'
     ], function () {
         Route::get('/', 'ActivitiesController@index');
+        Route::get('/dashboard/data', 'ActivitiesController@dashboardData');
         Route::get('/{id}', 'ActivitiesController@show');
         Route::delete('/{id}', 'ActivitiesController@remove');
         Route::post('/', 'ActivitiesController@store');

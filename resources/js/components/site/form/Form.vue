@@ -18,7 +18,8 @@
                                 dense
                                 v-model="activities.name"
                                 label="Titulo da atividade"
-                                type="text">
+                                type="text"
+                                >
                                 </v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
@@ -169,10 +170,29 @@
                                     </v-date-picker>
                                 </v-menu>
                             </v-col>
+                            <v-col cols="12" md="6">
+                                <v-file-input
+                                ref="anexo_conteudo"
+                                outlined
+								dense
+								clearable
+								show-size
+								small-chips
+								truncate-length="20"
+								label="Anexo"
+                                v-model="activities.document">
+
+                                </v-file-input>
+                            </v-col>
                         </v-row>
                         <v-row v-if="isUpdate">
                             <v-col cols="12">
                                 <v-textarea outlined dense label="Ponto de situação" v-model="activities.status_situation" placeholder="Atualize o ponto de situação da atividade"></v-textarea>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="isUpdate && user.role_id == 1">
+                            <v-col cols="12">
+                                <v-textarea outlined dense label="Observações" v-model="activities.observation" placeholder="Observações"></v-textarea>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -221,10 +241,13 @@ export default {
                     manager: '',
                     status_id: null,
                     owner: '',
+                    user_id: null,
                     start_date: null,
                     due_date: null,
                     final_date: null,
-                    status_situation: ''
+                    status_situation: '',
+                    document: null,
+                    observation: ''
                 }
             }
         },
@@ -249,13 +272,36 @@ export default {
             ]
         }
     },
+    computed: {
+        user() {
+            return this.$store.state.Auth.user;
+        }
+    },
     created() {
         this.getConfig()
     },
     methods: {
         onSubmit() {
             const action = this.isUpdate ? 'updateActivitie' : 'storeAtivities';
-            this.$store.dispatch(action, this.activities).then(res => {
+            const formData = new FormData();
+            formData.append('id', this.activities.id);
+            formData.append('name', this.activities.name);
+            formData.append('manager', this.activities.manager);
+            formData.append('status_id', this.activities.status_id);
+            formData.append('owner', this.activities.owner);
+            formData.append('user_id', this.activities.user_id);
+            formData.append('start_date', this.activities.start_date);
+            formData.append('due_date', this.activities.due_date);
+            formData.append('final_date', this.activities.final_date);
+            formData.append('status_situation', this.activities.status_situation);
+            formData.append('observation', this.activities.observation);
+            if (typeof(this.activities.document) !== "string"){
+                formData.append('document', this.activities.document);
+                // formData.delete("domunent");
+            }
+            // console.log(formData.get('id'));
+            // return;
+            this.$store.dispatch(action, formData).then(res => {
                 this.$router.push({name: 'activities'})
             })
         },

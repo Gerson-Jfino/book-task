@@ -8,7 +8,7 @@
         <v-row
         align="center"
         class="mx-0">
-          <!-- Gerson Josefino Maoze  -->
+          Tarefa de: {{ activitie.user.name }}
         </v-row>
         <v-row>
           <v-col cols="12" md="4">
@@ -32,10 +32,36 @@
             <v-text-field outlined repend-icon="mdi-calendar" dense readonly label="Data de Previsata" v-model="activitie.due_date"></v-text-field>
           </v-col>
         </v-row>
+        <v-row v-if="activitie.document">
+          <v-col cols="12" md="">
+            <span>Documento</span>
+            <div><a :href="activitie.document" target="_blank">Ver documento</a> </div>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="12">
-            <v-textarea height="300px"  outlined dense readonly label="Ponto de Situação" v-model="activitie.status_situation">
-            </v-textarea>
+            <!-- <v-textarea height="300px"  outlined dense readonly label="Ponto de Situação" v-model="activitie.status_situation">
+
+            </v-textarea> -->
+            <span>
+              <h3>Ponto de situação</h3>
+            </span>
+            <div>
+              {{ activitie.status_situation }}
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <!-- <v-textarea height="300px"  outlined dense readonly label="Ponto de Situação" v-model="activitie.status_situation">
+
+            </v-textarea> -->
+            <span>
+              <h3>Observações</h3>
+            </span>
+            <div>
+              {{ activitie.observation }}
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
@@ -75,9 +101,14 @@ export default {
         due_date: null,
         final_date: null,
         status_situation: "",
+        document: "",
+        observation: "",
         status: {
           id: null,
           name: ""
+        },
+        user: {
+          name: ''
         }
       }
     }

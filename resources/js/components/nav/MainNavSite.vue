@@ -6,6 +6,7 @@
 				<img src="/images/guezi.png" height="50" alt="" />
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
+			<v-btn text :to="{name: 'dashboard'}"> Dashboard </v-btn>
 			<v-btn text :to="{name: 'activities'}"> Atividades </v-btn>
 			<v-btn v-if="user.role_id == 1" text :to="{name: 'users'}"> Utilizadores </v-btn>
 			<v-menu

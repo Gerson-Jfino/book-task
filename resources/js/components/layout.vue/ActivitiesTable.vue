@@ -6,7 +6,7 @@
             <tr>
                 <th class="text-left">Nº Tarefa</th>
                 <th class="text-left">Atividades</th>
-                <th class="text-left" v-if="user.role_id == 1">Designado a</th>
+                <th class="text-left">Designado a</th>
                 <th class="text-left">Responsavel</th>
                 <th class="text-left">Status</th>
                 <th class="text-left">Solicitante</th>
@@ -20,7 +20,7 @@
             <tr v-for="task in activities.data" :key="task.id">
                 <td class="text-left">{{ task.id }}</td>
                 <td>{{ task.name }}</td>
-                <td v-if="user.role_id == 1">{{ task.user }}</td>
+                <td>{{ task.user }}</td>
                 <td>{{ task.manager }}</td>
                 <td>{{ task.status }}</td>
                 <td>{{ task.owner }}</td>
@@ -28,7 +28,7 @@
                 <td>{{ task.due_date }}</td>
                 <td>{{ task.final_date }}</td>
                 <td class="text-right">
-                    <v-btn depressed rounded small color="secondary" :to="{name: 'edit.activitie', params: { id: task.id }}">Editar</v-btn>
+                    <v-btn v-if="task.user_id == user.id || user.role_id == 1" depressed rounded small color="secondary" :to="{name: 'edit.activitie', params: { id: task.id }}">Editar</v-btn>
                     <v-btn depressed rounded small color="secondary"  :to="{ name: details_routes.name, params: { id: task.id } }">Detalhes</v-btn>
                 </td>
             </tr>
