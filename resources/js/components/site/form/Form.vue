@@ -295,7 +295,7 @@ export default {
             formData.append('final_date', this.activities.final_date);
             formData.append('status_situation', this.activities.status_situation);
             formData.append('observation', this.activities.observation);
-            if (typeof(this.activities.document) !== "string"){
+            if (typeof(this.activities.document) !== "string" && this.activities.document !== null){
                 formData.append('document', this.activities.document);
                 // formData.delete("domunent");
             }
