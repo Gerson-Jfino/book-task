@@ -185,7 +185,7 @@
                                 </v-file-input>
                             </v-col>
                         </v-row>
-                        <v-row v-if="isUpdate">
+                        <v-row>
                             <v-col cols="12">
                                 <v-textarea outlined dense label="Ponto de situação" v-model="activities.status_situation" placeholder="Atualize o ponto de situação da atividade"></v-textarea>
                             </v-col>
