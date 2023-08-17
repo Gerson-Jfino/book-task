@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'id' => (string)Str::uuid(),
             'name' => 'Admin',
             'role_id' => 1,
-            'email' => 'admin@app.com',
+            'email' => 'amina.uamusse@gmail.com',
             'active' => true,
             'first_login' => true,
             'login_attempts' => 0,
@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Em curso'],
             ['name' => 'Em curso pelo supervisor'],
             ['name' => 'Continuo'],
+            ['name' => 'pendente'],
             ['name' => 'Concluido'],
         ]);
 
