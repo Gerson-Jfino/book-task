@@ -91,9 +91,9 @@ class ActivitiesController extends Controller
             'manager' => 'required|string',
             'status_id' => 'required|integer|exists:status,id',
             'owner' => 'required|string',
-            'start_date' => 'required',
+            'start_date' => 'nullable',
             'due_date' => 'nullable',
-            'final_date' => 'required',
+            'final_date' => 'nullable',
             'status_situation' => 'nullable',
             'document' => 'nullable|file'
         ]);
@@ -105,15 +105,24 @@ class ActivitiesController extends Controller
                 'status_id',
                 'owner',
                 'start_date',
-                'due_date',
-                'final_date',
-                'status_situation'
+                // 'due_date',
+                // 'final_date',
+                // 'status_situation'
             ]
         );
+        if ($request->start_date) {
+            $input['start_date'] = $request->start_date;
+        }
+        if ($request->due_date) {
+            $input['due_date'] = $request->due_date;
+        }
+        if ($request->final_date) {
+            $input['final_date'] = $request->final_date;
+        }
         $input['user_id'] = Auth::user()->id;
-        $input['start_date'] = date('Y-m-d', strtotime($request['start_date']));
-        $input['due_date'] = date('Y-m-d',strtotime($request['due_date']));
-        $input['final_date'] = date('Y-m-d',strtotime($request['final_date']));
+        // $input['start_date'] = date('Y-m-d', strtotime($request['start_date']));
+        // $input['due_date'] = date('Y-m-d',strtotime($request['due_date']));
+        // $input['final_date'] = date('Y-m-d',strtotime($request['final_date']));
         DB::beginTransaction();
         try {
             if ($request->document) {
@@ -192,6 +201,31 @@ class ActivitiesController extends Controller
         }
     }
     public function dashboardData() {
+        $userStats = [];
+        $users = $this->user->get();
+        foreach ($users as $user) {
+            $userData = [];
+            $userData['name'] = $user->name;
+            $emCurso = $this->activitie->where(['user_id' => $user->id,'status_id' => 1])->get()->count(); 
+            $supervisor = $this->activitie->where(['user_id' => $user->id,'status_id' => 2])->get()->count(); 
+            $continuo = $this->activitie->where(['user_id' => $user->id,'status_id' => 3])->get()->count(); 
+            $pendente = $this->activitie->where(['user_id' => $user->id,'status_id' => 4])->get()->count(); 
+            $concluido = $this->activitie->where(['user_id' => $user->id,'status_id' => 5])->get()->count(); 
+            $userData['curso'] = $emCurso;
+            $userData['supervisor'] = $supervisor;
+            $userData['continuo'] = $continuo;
+            $userData['pendente'] = $pendente;
+            $userData['concluido'] = $concluido;
+            array_push($userStats, $userData);
+        }
+        $activitiesPendents = $this->activitie->with('user')->where('status_id', 4)->get()->map(function ($act) {
+            return [
+                'actividade' => $act->name,
+                'estado' => 'pendente',
+                'user' => $act->user->name,
+                'manager' => $act->manager
+            ];
+        });
         $totalUsers = $this->user->get()->count();
         $totalActivities = $this->activitie->get()->count();
         $admin = $this->user->where('role_id', 1)->get()->count();
@@ -210,11 +244,13 @@ class ActivitiesController extends Controller
             'actividadestotal' =>$totalActivities,
             'status' => [
                 'curso'=> $emCurso,
-                'continuo' => $supervisor,
+                'continuo' => $continuo,
                 'supervisor' => $supervisor,
                 'pendente' => $pendente,
                 'concluido' => $concluido
-            ]
+            ],
+            'stats' => $userStats,
+            'pendentes' => $activitiesPendents
         ], 200);
     }
 }

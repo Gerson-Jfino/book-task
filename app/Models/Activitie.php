@@ -45,7 +45,7 @@ class Activitie extends Model
     ];
     public function getDocumentAttribute()
     {
-        return env('APP_URL') . $this->attributes['document'];
+        return $this->attributes['document']?  env('APP_URL') . $this->attributes['document'] : '';
     }
 
     public function status()

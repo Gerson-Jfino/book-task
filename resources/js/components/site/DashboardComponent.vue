@@ -40,16 +40,16 @@
                 </v-card-subtitle>
             </v-card>
         </v-col>
-    </v-row>
-    <v-row>
+    <!-- </v-row> -->
+    <!-- <v-row> -->
         <v-col cols="3">
-            <v-card elevation="10" width="400px">
+            <v-card elevation="10" width="400px" height="320px">
                 <v-card-text>
                     <span>
                         UTILIZADORES
                     </span>
                 </v-card-text>
-                <v-card-text>
+                <v-card-text style="margin-top: -50px;">
                     <v-row justify="center" align="space-around">
                         <v-col cols="10">
                             <pie-chart v-if="mount" :object-data="dataUsers"></pie-chart>
@@ -58,8 +58,8 @@
                 </v-card-text>
             </v-card>
         </v-col>
-        <v-col cols="6">
-            <v-card width="600px" height="390px" elevation="10">
+        <v-col cols="3">
+            <v-card width="600px" height="320px" elevation="10">
                 <v-card-text>
                     <v-row justify="center" align="space-around">
                         <v-col cols="10">
@@ -67,6 +67,37 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
+            </v-card>
+        </v-col>
+    </v-row>
+    <v-row align="center" justify="space-around">
+        <v-col cols="6">
+            <v-card>
+                <v-card-title>
+                <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                :headers="headers"
+                :items="stats"
+                :search="search"
+                ></v-data-table>
+            </v-card>
+        </v-col>
+        <v-col cols="6">
+            <v-card>
+                <v-card-title>
+                    <span>Actividades pendentes</span>
+                </v-card-title>
+                <v-data-table
+                :headers="headersPendentes"
+                :items="pendentes"
+                ></v-data-table>
             </v-card>
         </v-col>
     </v-row>
@@ -96,7 +127,32 @@ export default {
                 concluido: 0,
                 pendente: 0
             },
-            mount: false
+            search: '',
+            stats: [],
+            pendentes: [],
+            mount: false,
+            headers: [
+                {
+                    text: 'Nome',
+                    align: 'start',
+                    value: 'name',
+                },
+                { text: 'actividades em curso', value: 'curso' },
+                { text: 'Em curso pelo supervisor', value: 'supervisor' },
+                { text: 'Actividades Continuo', value: 'continuo' },
+                { text: 'Actividades  Pendente', value: 'pendente' },
+                { text: 'Actividades Concluido', value: 'concluido' },
+            ],
+            headersPendentes: [
+                {
+                    text: 'Actividade',
+                    align: 'start',
+                    value: 'actividade',
+                },
+                { text: 'Designado a', value: 'user' },
+                { text: 'Supervisor', value: 'manager' },
+                { text: 'Estado', value: 'estado' },
+            ]
         }
     },
     created() {
@@ -112,6 +168,8 @@ export default {
                     this.dataUsers.normal = res.users.normal
                     // console.log(this.dataUsers);
                     this.activities = res.status
+                    this.stats = res.stats
+                    this.pendentes = res.pendentes
                     this.mount = true
                     console.log(res);
                 })

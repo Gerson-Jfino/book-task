@@ -32,7 +32,7 @@
             <v-text-field outlined repend-icon="mdi-calendar" dense readonly label="Data de Previsata" v-model="activitie.due_date"></v-text-field>
           </v-col>
         </v-row>
-        <v-row v-if="activitie.document">
+        <v-row v-show="activitie.document">
           <v-col cols="12" md="">
             <span>Documento</span>
             <div><a :href="activitie.document" target="_blank">Ver documento</a> </div>
@@ -46,7 +46,7 @@
             <span>
               <h3>Ponto de situação</h3>
             </span>
-            <div>
+            <div v-show="activitie.status_situation !== null">
               {{ activitie.status_situation }}
             </div>
           </v-col>
@@ -59,7 +59,7 @@
             <span>
               <h3>Observações</h3>
             </span>
-            <div>
+            <div v-show="activitie.observation !== null">
               {{ activitie.observation }}
             </div>
           </v-col>

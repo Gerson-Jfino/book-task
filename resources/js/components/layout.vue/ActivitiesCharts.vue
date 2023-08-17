@@ -60,7 +60,7 @@ export default {
     data() {
          return {
               chartData: {
-                   labels: [ 'Em curo', 'Continuo', 'Em corsu com supervisor', 'Pendente','Concluido'/*, 'Não recebem newsletter' */],
+                   labels: [ 'Em curso', 'Continuo', 'Em curso com supervisor', 'Pendente','Concluido'/*, 'Não recebem newsletter' */],
                    datasets: [ { label: `Atividades`,  
                    backgroundColor: [
                         'rgba(75, 192, 192, 0.2)',

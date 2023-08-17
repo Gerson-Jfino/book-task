@@ -1,12 +1,15 @@
 <template>
-    <Pie
-        :chart-options="chartOptions"
-        :chart-data="chartData"
-        :chart-id="chartId"
-        :dataset-id-key="datasetIdKey"
-        :width="20"
-        :height="400"
-    />
+     <Pie
+          :chart-options="chartOptions"
+          :chart-data="chartData"
+          :chart-id="chartId"
+          :dataset-id-key="datasetIdKey"
+          :plugins="plugins"
+          :css-classes="cssClasses"
+          :styles="styles"
+          :width="5"
+          :height="8"
+     />
 </template>
 
 <script>

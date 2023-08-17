@@ -290,9 +290,15 @@ export default {
             formData.append('status_id', this.activities.status_id);
             formData.append('owner', this.activities.owner);
             formData.append('user_id', this.activities.user_id);
-            formData.append('start_date', this.activities.start_date);
-            formData.append('due_date', this.activities.due_date);
-            formData.append('final_date', this.activities.final_date);
+            if (this.activities.start_date !== null) {
+                formData.append('start_date', this.activities.start_date);
+            }
+            if (this.activities.due_date !== null) {
+                formData.append('due_date', this.activities.due_date);
+            }
+            if (this.activities.final_date !== null) {
+                formData.append('final_date', this.activities.final_date);
+            }
             formData.append('status_situation', this.activities.status_situation);
             formData.append('observation', this.activities.observation);
             if (typeof(this.activities.document) !== "string" && this.activities.document !== null){
