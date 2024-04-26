@@ -53,6 +53,13 @@ Route::group([
     }
 );
 Route::group([
+        'prefix' => 'incident',
+        'namespace' => 'Incident'
+    ], function () {
+        Route::get('/', 'IncidentController@index');
+    }
+);
+Route::group([
     'prefix' => 'status',
     'namespace' => 'Activities'
     ], function () {
