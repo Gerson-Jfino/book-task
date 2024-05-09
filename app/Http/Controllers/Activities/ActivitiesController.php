@@ -29,7 +29,7 @@ class ActivitiesController extends Controller
         $filter = request('s_name');
         $status = request('s_status');
         $user = Auth::user();
-        if (!empty($filter)){
+        if (!empty($filter) && $filter){
             $activities = $this->activitie->with(['user', 'status'])->whereHas('user', function($q) use ($filter) {
                 $q->where('name', 'like', "%$filter%");
             })->get()->map(function ($act) {
@@ -46,7 +46,7 @@ class ActivitiesController extends Controller
                     "user_id" => $act->user_id
                 ];
             });
-        } elseif (!empty($status)){
+        } elseif (!empty($status) && $status){
             $activities = $this->activitie->with(['user', 'status'])->whereHas('status', function($q) use ($status) {
                 $q->where('id', '=', $status);
             })->get()->map(function ($act) {
