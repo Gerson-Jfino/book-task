@@ -54,9 +54,11 @@ Route::group([
 );
 Route::group([
         'prefix' => 'incident',
+        'middleware' => ['auth.jwt'],
         'namespace' => 'Incident'
     ], function () {
         Route::get('/', 'IncidentController@index');
+        Route::post('/', 'IncidentController@store');
     }
 );
 Route::group([
